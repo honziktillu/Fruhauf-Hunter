@@ -1,7 +1,5 @@
 export class Entity {
-    constructor(x, y, w, h, c) {
-        this.x = x;
-        this.y = y;
+    constructor(w, h, c) {
         this.color = c;
         this.size = {
             width: w,
@@ -18,7 +16,9 @@ export class Entity {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.size.width, this.size.height);
     }
+
     update(canvas){
+        if (this.x < -this.size.width - 10 || this.x > canvas.width + 10) return this.spawn(canvas);
         switch (this.type) {
              case 0:
                  this.x += this.velocity;
@@ -41,16 +41,19 @@ export class Entity {
 
     spawn(canvas) {
         const rN = Math.random();
+        console.log(rN);
         if (rN > 0.6) {
             this.type = 0; // Left
-            this.y =  Math.floor(Math.random() * (canvas.height - this.size.height + 1 ));
+            this.x = -this.size.width;
+            this.y = Math.floor(Math.random() * (canvas.height - this.size.height + 1 ));
         } else if (rN < 0.2) {
             this.type = 1; // Bottom
-            this.x =  Math.floor(Math.random() * (canvas.width + 199 )) + 200;
-            this.y =  canvas.height - this.size.height;
+            this.x = Math.floor(Math.random() * (canvas.width + 199 )) + 200;
+            this.y = canvas.height - this.size.height;
         } else {
             this.type = 2; // Right
-            this.y =  Math.floor(Math.random() * (canvas.height - this.size.height + 1 ));
+            this.x = canvas.width;
+            this.y = Math.floor(Math.random() * (canvas.height - this.size.height + 1 ));
         }    
        
     }

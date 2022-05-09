@@ -8,6 +8,7 @@ const stack = new Stack();
 const score = new Score();
 const countdown = new Countdown(5);
 const highscore = new HighScore();
+const entity = new Entity(100, 100, "red");
 
 
 const collisionObjects = [];
@@ -69,6 +70,7 @@ const clearCanvas = () => {
 
 const updateGame = () => {
   checkCursorCollision();
+  entity.update(canvas);
   if (keys["KeyR"]) {
     keys["KeyR"] = false;
     stack.reload();
@@ -77,10 +79,12 @@ const updateGame = () => {
 
 const renderGame = () => {
   renderActiveEntities();
+  entity.draw(ctx);
   countdown.draw(canvas, ctx);
   highscore.draw(canvas, ctx);
   stack.draw(canvas, ctx);
   score.draw(canvas, ctx);
+
   renderCursor();
 };
 
@@ -88,7 +92,7 @@ const rn = (minimum, maximum) =>
   Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 
 const spawnEntities = (numberOfEntities) => {
-  for (let i = 0; i < numberOfEntities; i++) {
+  /*for (let i = 0; i < numberOfEntities; i++) {
     collisionObjects.push(
       new Entity(
         rn(0, canvas.width),
@@ -100,7 +104,7 @@ const spawnEntities = (numberOfEntities) => {
         })`
       )
     );
-  }
+  }*/
 };
 
 const renderActiveEntities = () => {
@@ -146,5 +150,8 @@ const checkCursorCollision = () => {
 window.onload = () => {
   resizeCanvas();
   //spawnEntities(1000);
+  console.log(entity);
+  entity.spawn(canvas);
+  console.log(entity);
   window.requestAnimationFrame(gameLoop);
 };
